@@ -6,5 +6,6 @@
         <page name='FilterOperator'/>
         <page name='Blog-learn'/>
         <page name='TransformingOperators'/>
+        <page name='CombiningOperators'/>
     </pages>
 </playground>
