@@ -7,5 +7,6 @@
         <page name='Blog-learn'/>
         <page name='TransformingOperators'/>
         <page name='CombiningOperators'/>
+        <page name='Schedular'/>
     </pages>
 </playground>
