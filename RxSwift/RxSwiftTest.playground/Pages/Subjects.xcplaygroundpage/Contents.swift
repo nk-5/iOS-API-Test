@@ -18,7 +18,7 @@ example(of: "PublishSubject") {
     
     subject.on(.next("1"))
     subject.onNext("2")
-    
+
     let subscriptionTwo = subject.subscribe { event in
         print("2)", event.element ?? event)
     }
@@ -35,7 +35,7 @@ example(of: "PublishSubject") {
     subject.subscribe {
         print("3)", $0.element ?? $0)
     }
-    .addDisposableTo(disposeBag)
+    .disposed(by: disposeBag)
     subject.onNext("?")
 }
 
@@ -58,23 +58,27 @@ func print<T: CustomStringConvertible>(label: String, event: Event<T>) {
 
 example(of: "BehaviorSubjedt") {
     let subject = BehaviorSubject(value: "Initial value")
+    subject.onNext("test")
     let disposeBag = DisposeBag()
     
     subject.subscribe {
         print(label: "1)", event: $0)
     }
-    .addDisposableTo(disposeBag)
+    .disposed(by: disposeBag)
     
     subject.onNext("X") // output 1) X
+    subject.onNext("keigo")
     subject.onError(MyError.anError)
     subject.subscribe {
         print(label: "2)", event: $0)
     }
-    .addDisposableTo(disposeBag)
+    .disposed(by: disposeBag)
+   
+    subject.onNext("hoge")
 }
 
 //    --- Example of: BehaviorSubjedt ---
-// 1) Initial value
+// 1) test
 // 1) X
 // 1) anError
 // 2) anError
@@ -90,18 +94,18 @@ example(of: "ReplaySubject") {
     subject.subscribe {
         print(label: "1)", event: $0)  // 1) 2, 1) 3
     }
-    .addDisposableTo(disposeBag)
+    .disposed(by: disposeBag)
     
     subject.subscribe {
         print(label: "2)", event: $0) // 2) 2, 2) 3
     }
-    .addDisposableTo(disposeBag)
+    .disposed(by: disposeBag)
     
     subject.onNext("4") // 1) 4, 2) 4
     subject.subscribe {
         print(label: "3)", event: $0) // 3) 3, 3) 4
     }
-    .addDisposableTo(disposeBag)
+    .disposed(by: disposeBag)
 
     subject.onError(MyError.anError)
     subject.dispose()
@@ -117,13 +121,14 @@ example(of: "Variable") {
     variable.asObservable().subscribe {
         print(label: "1)", event: $0)
     }
-    .addDisposableTo(disposeBag)
+    .disposed(by: disposeBag)
     
     variable.value = "1"
+    variable.value = "keigo"
     variable.asObservable().subscribe {
         print(label: "2)", event: $0) // 2) 1
     }
-    .addDisposableTo(disposeBag)
+    .disposed(by: disposeBag)
     
     variable.value = "2"
     
@@ -132,6 +137,16 @@ example(of: "Variable") {
 //    variable.asObservable().onError(MyError.anError)s
 //    variable.asObservable().onCompleted()
 }
+
+/*
+    --- Example of: Variable ---
+1) Initial value
+1) 1
+1) keigo
+2) keigo
+1) 2
+2) 2
+*/
 
 
 //: [Next](@next)

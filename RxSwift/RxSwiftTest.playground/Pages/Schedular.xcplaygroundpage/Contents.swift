@@ -2,6 +2,7 @@
 
 import Foundation
 import RxSwift
+import RxCocoa
 
 
 // Utils
@@ -63,6 +64,11 @@ fruit
     .observeOn(MainScheduler.instance)
     .dumpingSubscription()
     .disposed(by: bag)
+
+let label = UITextField()
+label.text = "keigo"
+
+let text = label.rx.text.asDriver(onErrorJustReturn: "error on Driver")
 
 RunLoop.main.run(until: Date(timeIntervalSinceNow: 13))
 
