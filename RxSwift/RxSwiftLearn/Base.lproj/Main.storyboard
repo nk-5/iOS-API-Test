@@ -13,7 +13,7 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="RxSwift" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="RxSwiftLearn" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -56,9 +56,9 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
-                        <outlet property="button" destination="lEI-9C-zS3" id="6XT-kT-iLc"/>
-                        <outlet property="label" destination="qnd-5W-763" id="9eB-U5-I9K"/>
-                        <outlet property="text" destination="0QK-x0-Vwc" id="eRr-Zo-nR0"/>
+                        <outlet property="testActionButton" destination="lEI-9C-zS3" id="Z5z-Ku-h9H"/>
+                        <outlet property="testInputField" destination="0QK-x0-Vwc" id="UYs-4F-13n"/>
+                        <outlet property="testResultLabel" destination="qnd-5W-763" id="IcI-Dc-uR0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
