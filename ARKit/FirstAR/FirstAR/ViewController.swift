@@ -9,7 +9,7 @@
 import UIKit
 import ARKit
 
-class ViewController: UIViewController, ARSessionDelegate {
+class ViewController: UIViewController, ARSessionDelegate, ARSCNViewDelegate {
 
     @IBOutlet weak var sceneView: ARSCNView!
     
@@ -18,6 +18,7 @@ class ViewController: UIViewController, ARSessionDelegate {
         
         sceneView.scene = SCNScene(named: "art.scnassets/ship.scn")!
         sceneView.session.delegate = self
+    sceneView.delegate = self
         
         let configuration = ARWorldTrackingConfiguration()
         configuration.planeDetection = .horizontal
@@ -37,6 +38,14 @@ class ViewController: UIViewController, ARSessionDelegate {
         print("update plane")
     }
 
-
+    func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
+        guard let planeAnchor = anchor as? ARPlaneAnchor else { fatalError() }
+        let geometry = SCNPlane(width: CGFloat(planeAnchor.extent.x), height: CGFloat(planeAnchor.extent.z))
+        geometry.materials.first?.diffuse.contents = UIColor.yellow
+        
+        let planeNode = SCNNode(geometry: geometry)
+        planeNode.transform = SCNMatrix4MakeRotation(-Float.pi / 2.0, 1, 0, 0)
+        DispatchQueue.main.async(execute: {node.addChildNode(planeNode)})
+    }
 }
 
