@@ -12,18 +12,25 @@ import ARKit
 class ViewController: UIViewController, ARSessionDelegate, ARSCNViewDelegate {
 
     @IBOutlet weak var sceneView: ARSCNView!
-    
+  
+    let virtualObjectNode = SCNNode()
     override func viewDidLoad() {
         super.viewDidLoad()
         
         sceneView.scene = SCNScene(named: "art.scnassets/ship.scn")!
         sceneView.session.delegate = self
-    sceneView.delegate = self
-        
+        sceneView.delegate = self
+        sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints, .showBoundingBoxes]
+
         let configuration = ARWorldTrackingConfiguration()
         configuration.planeDetection = .horizontal
-        
+
         sceneView.session.run(configuration)
+        
+        let scene = SCNScene(named: "art.scnassets/ship.scn")!
+        for child in scene.rootNode.childNodes {
+            virtualObjectNode.addChildNode(child)
+        }
     }
     
     func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
@@ -42,10 +49,14 @@ class ViewController: UIViewController, ARSessionDelegate, ARSCNViewDelegate {
         guard let planeAnchor = anchor as? ARPlaneAnchor else { fatalError() }
         let geometry = SCNPlane(width: CGFloat(planeAnchor.extent.x), height: CGFloat(planeAnchor.extent.z))
         geometry.materials.first?.diffuse.contents = UIColor.yellow
-        
+
         let planeNode = SCNNode(geometry: geometry)
         planeNode.transform = SCNMatrix4MakeRotation(-Float.pi / 2.0, 1, 0, 0)
-        DispatchQueue.main.async(execute: {node.addChildNode(planeNode)})
+        
+        DispatchQueue.main.async(execute: {
+            node.addChildNode(planeNode)
+            node.addChildNode(self.virtualObjectNode)
+        })
     }
 }
 
